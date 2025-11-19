@@ -7,17 +7,13 @@
   </div>
 
   <div class="grid grid-cols-5 gap-2 mr-6">
-    <button class="w-8 h-8 rounded bg-red-500" (click)="setColor('red')" [class.ring-3]="drawing.SelectedColor==='red'"></button>
-    <button class="w-8 h-8 rounded bg-blue-500" (click)="setColor('blue')" [class.ring-3]="drawing.SelectedColor==='blue'"></button>
-    <button class="w-8 h-8 rounded bg-green-500" (click)="setColor('green')"[class.ring-3]="drawing.SelectedColor==='green'"></button>
-    <button class="w-8 h-8 rounded bg-yellow-400" (click)="setColor('yellow')" [class.ring-3]="drawing.SelectedColor==='yellow'"></button>
-    <button class="w-8 h-8 rounded bg-purple-500" (click)="setColor('purple')" [class.ring-3]="drawing.SelectedColor==='purple'"></button>
-    <button class="w-8 h-8 rounded bg-pink-500" (click)="setColor('pink')" [class.ring-3]="drawing.SelectedColor==='pink'"></button>
-    <button class="w-8 h-8 rounded bg-orange-500" (click)="setColor('orange')" [class.ring-3]="drawing.SelectedColor==='orange'"></button>
-    <button class="w-8 h-8 rounded bg-cyan-500" (click)="setColor('cyan')" [class.ring-3]="drawing.SelectedColor==='cyan'"></button>
-    <button class="w-8 h-8 rounded bg-gray-800" (click)="setColor('gray')" [class.ring-3]="drawing.SelectedColor==='gray'"></button>
-    <button class="w-8 h-8 rounded bg-white border" (click)="setColor('white')" [class.ring-3]="drawing.SelectedColor==='white'"></button>
+    @for (color of colors; track color) {
+      <button
+        class="w-8 h-8 rounded"
+        (click)="setColor(color.key)"
+        [style.background-color]="color.value"
+        [class.ring-3]="drawing.SelectedColor === color.key"
+      ></button>
+    }
   </div>
-
-  
 </div>

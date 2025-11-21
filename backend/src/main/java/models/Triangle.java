@@ -1,17 +1,20 @@
 package models;
 
+import lombok.Data;
+
+@Data
 public class Triangle extends Shape {
 
-    public double sides=3;
-    public double radius=60;
+    private double sides=3;
+    private double radius=60;
     public Triangle() {
-        this.className="triangle";
+        setClassName("triangle");
     }
 
     public Triangle(double x, double y, double radius) {
         this();
-        this.x=x;
-        this.y=y;
+        setX(x);
+        setY(y);
         this.radius=radius;
     }
 }

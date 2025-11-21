@@ -1,18 +1,21 @@
 package models;
 
+import lombok.Data;
+
+@Data
 public class Circle extends Shape {
 
-    public double radius;
+    private double radius;
 
     public Circle() {
-        this.className="circle";
+        setClassName("circle");
         this.radius=100;
     }
 
     public Circle(double x, double y, double radius) {
         this();
-        this.x=x;
-        this.y=y;
+        setX(x);
+        setY(y);
         this.radius=radius;
     }
 }

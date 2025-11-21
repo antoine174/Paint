@@ -1,19 +1,20 @@
 package models;
 
+import lombok.Data;
+
+@Data
 public abstract class Shape {
 
-    public String className;
-    public int id;
-    public double x;
-    public double y;
-    public double scaleX = 1.0;
-    public double scaleY = 1.0;    public double rotation;
-    public boolean dragabble = true;
-    public double strokeWidth;
-    public String fill;
-    public String stroke;
+    private String className;
+    private double x;
+    private double y;
+    private double scaleX = 1.0;
+    private double scaleY = 1.0;    public double rotation;
+    private boolean dragabble = true;
+    private double strokeWidth;
+    private String fill;
+    private String stroke;
 
     public Shape() {
-        // Default constructor
     }
 }

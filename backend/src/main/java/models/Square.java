@@ -1,18 +1,21 @@
 package models;
 
+import lombok.Data;
+
+@Data
 public class Square extends Shape {
 
-    public double width;
-    public double height;
+    private double width;
+    private double height;
 
     public Square() {
-        this.className="square";
+        setClassName("square");
     }
 
     public Square(double x, double y, double size) {
         this();
-        this.x=x;
-        this.y=y;
+        setX(x);
+        setY(y);
         this.width=size;
         this.height=size;
     }

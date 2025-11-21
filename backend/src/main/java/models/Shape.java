@@ -1,29 +1,19 @@
 package models;
 
 public abstract class Shape {
-  
-    public double strokeWidth;
-    public String strokeColor;
+
+    public String className;
     public int id;
-    public String type;
     public double x;
     public double y;
-    public double length;
-    public double width;
+    public double scaleX = 1.0;
+    public double scaleY = 1.0;    public double rotation;
+    public boolean dragabble = true;
+    public double strokeWidth;
     public String fill;
+    public String stroke;
 
-    public Shape(double x,double y) {
-        this.strokeColor ="black";
-        this.x=x;
-        this.y=y;
+    public Shape() {
+        // Default constructor
     }
-
-
-//    public abstract void move(double Offsetx,double Offsety);
-//    public abstract void copy(Shape origin );
-//    public abstract void delete(Shape shape );
-//    public abstract void fill(Shape shape,String color );
-//    public abstract void resize(Shape shape,double factor );
-//    public abstract void changeStrokeColor(Shape shape,String color );
-//    public abstract void changeStrokeWidth(Shape shape,double strokeWidth );
 }

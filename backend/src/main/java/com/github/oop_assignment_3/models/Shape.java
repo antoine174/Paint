@@ -1,5 +1,6 @@
 package com.github.oop_assignment_3.models;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -11,6 +12,7 @@ public abstract class Shape implements Cloneable {
 
 	private int id;
 
+	@JsonUnwrapped
 	private Transform transform = new Transform();
 
 	private boolean draggable = true;

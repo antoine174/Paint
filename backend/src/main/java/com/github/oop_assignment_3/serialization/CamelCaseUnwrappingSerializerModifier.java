@@ -50,7 +50,12 @@ public class CamelCaseUnwrappingSerializerModifier
 							return StringUtils.uncapitalize(transformed);
 						}
 					});
-			return defaultSerializer.unwrappingSerializer(custom);
+
+			if (unwrapper.transform("").isEmpty()) {
+				return defaultSerializer.unwrappingSerializer(unwrapper);
+			} else {
+				return defaultSerializer.unwrappingSerializer(custom);
+			}
 		}
 
 		@Override

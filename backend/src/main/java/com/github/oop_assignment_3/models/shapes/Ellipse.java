@@ -20,4 +20,9 @@ public class Ellipse extends Shape {
 		this.radiusX = radiusX;
 		this.radiusY = radiusY;
 	}
+
+	@Override
+	public Ellipse clone() {
+		return (Ellipse) super.clone();
+	}
 }

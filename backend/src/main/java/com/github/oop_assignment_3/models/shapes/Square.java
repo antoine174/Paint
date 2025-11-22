@@ -20,4 +20,9 @@ public class Square extends Shape {
 		this.width = size;
 		this.height = size;
 	}
+
+	@Override
+	public Square clone() {
+		return (Square) super.clone();
+	}
 }

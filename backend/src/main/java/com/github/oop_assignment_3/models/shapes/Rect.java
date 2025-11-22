@@ -20,4 +20,9 @@ public class Rect extends Shape {
 		this.width = width;
 		this.height = height;
 	}
+
+	@Override
+	public Rect clone() {
+		return (Rect) super.clone();
+	}
 }

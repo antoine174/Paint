@@ -19,4 +19,9 @@ public class Triangle extends Shape {
 
 		this.radius = radius;
 	}
+
+	@Override
+	public Triangle clone() {
+		return (Triangle) super.clone();
+	}
 }

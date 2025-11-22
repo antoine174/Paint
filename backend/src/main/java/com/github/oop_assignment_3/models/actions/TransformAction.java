@@ -1,7 +1,6 @@
 package com.github.oop_assignment_3.models.actions;
 
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.oop_assignment_3.models.Action;
 import com.github.oop_assignment_3.models.Shape;
 import com.github.oop_assignment_3.models.Transform;
@@ -12,16 +11,14 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class TransformAction extends Action {
 	private final int id;
-	@JsonUnwrapped(prefix = "new")
-	private final Transform newTransform;
-	@JsonUnwrapped(prefix = "old")
 	private final Transform oldTransform;
+	private final Transform newTransform;
 
 	public TransformAction(int id, Transform oldTransform,
 			Transform newTransform) {
 		this.id = id;
-		this.newTransform = newTransform;
 		this.oldTransform = oldTransform;
+		this.newTransform = newTransform;
 	}
 
 	@Override

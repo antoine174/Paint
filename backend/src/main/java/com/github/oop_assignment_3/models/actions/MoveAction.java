@@ -11,18 +11,18 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class MoveAction extends Action {
 	private final int id;
-	private final double newX;
-	private final double newY;
 	private final double oldX;
 	private final double oldY;
+	private final double newX;
+	private final double newY;
 
-	public MoveAction(int id, double newX, double newY, double oldX,
-			double oldY) {
+	public MoveAction(int id, double oldX, double oldY, double newX,
+			double newY) {
 		this.id = id;
-		this.newX = newX;
-		this.newY = newY;
 		this.oldX = oldX;
 		this.oldY = oldY;
+		this.newX = newX;
+		this.newY = newY;
 	}
 
 	@Override

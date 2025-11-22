@@ -20,4 +20,11 @@ public class Line extends Shape {
 
 		this.points = points;
 	}
+
+	@Override
+	public Line clone() {
+		Line cloned = (Line) super.clone();
+		cloned.points = points.clone();
+		return cloned;
+	}
 }

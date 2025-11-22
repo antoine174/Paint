@@ -20,4 +20,9 @@ public class Circle extends Shape {
 
 		this.radius = radius;
 	}
+
+	@Override
+	public Circle clone() {
+		return (Circle) super.clone();
+	}
 }

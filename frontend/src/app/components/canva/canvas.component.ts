@@ -54,7 +54,6 @@ export class Canvas implements OnInit, AfterViewInit{
       this.actionsIndex--;
       console.log(action)
       action.undo(this.shapes)
-      console.log(this.actionsIndex)
     } else console.log("can't undo")
   }
   handleDelete() {
@@ -120,7 +119,7 @@ export class Canvas implements OnInit, AfterViewInit{
       this.actions.push(addAction)
       this.actionsIndex++;
     } else {
-      console.log(this.shapes)
+      console.log(this.shapes())
       console.log(this.actions)
     }
   }

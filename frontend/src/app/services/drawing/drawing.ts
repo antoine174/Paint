@@ -4,5 +4,5 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Drawing {
-  SelectedColor: string = '#000000';
+  SelectedColor: string = 'red';
 }

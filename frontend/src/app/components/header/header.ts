@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
-import { Drawing } from '../../services/drawing';
+import {Component, output} from '@angular/core';
+import { Drawing } from '../../services/drawing/drawing';
 
+// @ts-ignore
 @Component({
   selector: 'app-header',
   imports: [],
   templateUrl: './header.html',
   styleUrl: './header.css',
+  standalone: true
 })
 export class Header {
   colors = [
@@ -20,7 +22,14 @@ export class Header {
     { key: 'gray', value: 'var(--color-gray-800)' },
     { key: 'white', value: 'var(--color-white)' },
   ] as const;
-
+  create = output<string>();
+  action = output<string>();
+  createEmmit(shape: string) {
+    this.create.emit(shape)
+  }
+  handleActionEmmit(action: string) {
+    this.action.emit(action)
+  }
   constructor(public drawing: Drawing) {}
 
   setColor(color: string) {

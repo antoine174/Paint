@@ -3,6 +3,8 @@ package com.github.oop_assignment_3.services;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.oop_assignment_3.dtos.actions.CreateActionDTO;
 import com.github.oop_assignment_3.dtos.actions.DeleteActionDTO;
 import com.github.oop_assignment_3.dtos.actions.MoveActionDTO;
@@ -68,12 +70,12 @@ public class PaintService {
 	}
 
 	public List<Shape> create(CreateActionDTO actionDTO) {
-		Shape shape = shapeManager.createShape(actionDTO.getShape().getClassName());
-		shape.setTransform(actionDTO.getShape().getTransform());
-		shape.setDraggable(actionDTO.getShape().isDraggable());
-		shape.setStrokeWidth(actionDTO.getShape().getStrokeWidth());
-		shape.setStroke(actionDTO.getShape().getStroke());
-		shape.setFill(actionDTO.getShape().getFill());
+		Shape shape = shapeManager.createShape(actionDTO.getClassName());
+		shape.setTransform(actionDTO.getTransform());
+		shape.setDraggable(actionDTO.isDraggable());
+		shape.setStrokeWidth(actionDTO.getStrokeWidth());
+		shape.setStroke(actionDTO.getStroke());
+		shape.setFill(actionDTO.getFill());
 
 		CreateAction action = new CreateAction(shape);
 

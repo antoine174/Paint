@@ -6,10 +6,13 @@ import com.github.oop_assignment_3.dtos.actions.MoveActionDTO;
 import com.github.oop_assignment_3.dtos.actions.TransformActionDTO;
 import com.github.oop_assignment_3.models.Shape;
 import com.github.oop_assignment_3.services.PaintService;
+import com.github.oop_assignment_3.models.LoadRequest;
+import com.github.oop_assignment_3.models.SaveRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -57,5 +60,16 @@ public class PaintController {
     @PostMapping("/redo")
     public List<Shape> redo() {
         return paintService.redo();
+    }
+
+    @PostMapping("/save")
+    public String save(@RequestBody SaveRequest request) throws IOException {
+        paintService.save(request);
+        return "Saved Successfully!";
+    }
+
+    @PostMapping("/load")
+    public List<Shape> load(@RequestBody LoadRequest request) throws IOException {
+        return paintService.load(request);
     }
 }

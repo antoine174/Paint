@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 public class Drawing {
 	private Map<Integer, Shape> shapes = new HashMap<>();
 	@Getter
@@ -13,16 +15,13 @@ public class Drawing {
 	@Getter
 	private int historyIndex = 0;
 
-	public Drawing() {}
-
-	public Drawing(List<Shape> shapes, List<Action> history, int historyIndex) {
-		shapes.forEach(shape -> this.shapes.put(shape.getId(), shape));
-		this.history = history;
-		this.historyIndex = historyIndex;
-	}
-
 	public List<Shape> getShapes() {
 		return new ArrayList<>(shapes.values());
+	}
+
+	@SuppressWarnings("unused")
+	private void setShapes(List<Shape> shapes) {
+		shapes.forEach(shape -> this.shapes.put(shape.getId(), shape));
 	}
 
 	public Shape getShape(int id) {

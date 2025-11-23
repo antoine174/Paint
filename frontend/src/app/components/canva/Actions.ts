@@ -1,8 +1,9 @@
 import {ShapeConfig} from 'konva/lib/Shape';
 import {WritableSignal} from '@angular/core';
+import {RegularPolygonConfig} from 'konva/lib/shapes/RegularPolygon';
 
 export abstract class Action {
-  constructor(type: string) {
+  protected constructor(type: string) {
     this.type = type
   }
   type: string;
@@ -151,10 +152,32 @@ export class AddShape extends Action{
     this.fill = fill
   }
   apply(shapesSignal: WritableSignal<{ type: string; config: ShapeConfig }[]>): void {
-    const shapesArr: {type: string, config: ShapeConfig}[] = shapesSignal();
-    const cfg: any = { name: this.name, fill: this.fill, x: 100, y: 100 }
-    const newShapes = [...shapesArr, {type: this.className, config: cfg}]
-    shapesSignal.set(newShapes)
+    switch (this.className) {
+      case 'rect': {
+        createRect(shapesSignal, this.name, this.fill)
+        break
+      }
+      case 'square': {
+        createSquare(shapesSignal, this.name, this.fill)
+        break
+      }
+      case 'circle': {
+        createCircle(shapesSignal, this.name, this.fill)
+        break
+      }
+      case 'triangle': {
+        createTriangle(shapesSignal, this.name, this.fill)
+        break
+      }
+      case 'ellipse': {
+        createEllipse(shapesSignal, this.name, this.fill)
+        break
+      }
+      case 'line': {
+        createLine(shapesSignal, this.name, this.fill)
+        break
+      }
+    }
   }
 
   undo(shapesSignal: WritableSignal<{ type: string; config: ShapeConfig }[]>): void {
@@ -193,4 +216,109 @@ export class DeleteShape extends Action{
     else console.log("not log of the deleted shape")
   }
 
+}
+
+function createRect(shapes: WritableSignal<{ type: string; config: ShapeConfig }[]>, name: string, fill: string) {
+  const cfg: any = {
+    x: 100,
+    y: 100,
+    height: 100,
+    width: 200,
+    fill: fill,
+    stroke: "black",
+    strokeWidth: 2,
+    draggable: true,
+    scaleX: 1,
+    scaleY: 1,
+    name: name
+  }
+  console.log("rect")
+  shapes.update((shapesArr) => [
+    ...shapesArr,
+    { type: "rect", config: cfg }
+  ])
+}
+function createCircle(shapes: WritableSignal<{ type: string; config: ShapeConfig }[]>, name: string, fill: string) {
+  const shapesArr = shapes();
+  const cfg: any = {
+    x: 100,
+    y: 100,
+    radius: 100,
+    fill: fill,
+    strokeWidth: 2,
+    stroke: "black",
+    draggable: true,
+    scaleX: 1,
+    scaleY: 1,
+    name: name
+  }
+  shapes.set([...shapesArr, { type: "circle", config: cfg }])
+}
+function createSquare(shapes: WritableSignal<{ type: string; config: ShapeConfig }[]>, name: string, fill: string) {
+  const shapesArr = shapes();
+  const cfg: any = {
+    x: 100,
+    y: 100,
+    height: 200,
+    width: 200,
+    fill: fill,
+    strokeWidth: 2,
+    stroke: "black",
+    draggable: true,
+    scaleX: 1,
+    scaleY: 1,
+    name: name
+  }
+  shapes.set([...shapesArr, { type: "square", config: cfg }])
+}
+function createEllipse(shapes: WritableSignal<{ type: string; config: ShapeConfig }[]>, name: string, fill: string) {
+  const shapesArr = shapes();
+  const cfg: any = {
+    x: 100,
+    y: 100,
+    fill: fill,
+    strokeWidth: 2,
+    stroke: "black",
+    draggable: true,
+    scaleX: 2,
+    scaleY: 1,
+    name: name,
+    className: 'asd',
+    radiusX: 50,
+    radiusY: 50
+  }
+  shapes.set([...shapesArr, { type: "ellipse", config: cfg }])
+}
+function createLine(shapes: WritableSignal<{ type: string; config: ShapeConfig }[]>, name: string, fill: string) {
+  const shapesArr =shapes();
+  const cfg: any = {
+    points: [50, 50, 250, 50],
+    fill: fill ,
+    strokeWidth: 4,
+    stroke: fill ,
+    draggable: true,
+    scaleX: 1,
+    scaleY: 1,
+    name: name,
+    x: 0,
+    y: 0
+  }
+  shapes.set([...shapesArr, { type: "line", config: cfg }])
+}
+function createTriangle(shapes: WritableSignal<{ type: string; config: ShapeConfig }[]>, name: string, fill: string) {
+  const config: RegularPolygonConfig = {
+    x: 100,
+    y: 100,
+    sides: 3,
+    radius: 60,
+    fill: fill,
+    strokeWidth: 2,
+    stroke: "black",
+    draggable: true,
+    scaleX: 1,
+    scaleY: 1,
+    name: name
+  }
+  const shapesArr =shapes();
+  shapes.set([...shapesArr, { type: "triangle", config: config as ShapeConfig }])
 }

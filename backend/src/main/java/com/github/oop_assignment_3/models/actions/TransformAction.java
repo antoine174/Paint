@@ -1,7 +1,7 @@
 package com.github.oop_assignment_3.models.actions;
 
-import java.util.Map;
 import com.github.oop_assignment_3.models.Action;
+import com.github.oop_assignment_3.models.Drawing;
 import com.github.oop_assignment_3.models.Shape;
 import com.github.oop_assignment_3.models.Transform;
 import lombok.Data;
@@ -22,14 +22,14 @@ public class TransformAction extends Action {
 	}
 
 	@Override
-	public void apply(Map<Integer, Shape> stage) {
-		Shape shape = stage.get(id);
+	public void apply(Drawing drawing) {
+		Shape shape = drawing.getShape(id);
 		shape.setTransform(newTransform);
 	}
 
 	@Override
-	public void undo(Map<Integer, Shape> stage) {
-		Shape shape = stage.get(id);
+	public void unapply(Drawing drawing) {
+		Shape shape = drawing.getShape(id);
 		shape.setTransform(oldTransform);
 	}
 }

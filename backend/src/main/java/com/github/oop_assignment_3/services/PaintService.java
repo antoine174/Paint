@@ -1,16 +1,19 @@
 package com.github.oop_assignment_3.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.oop_assignment_3.dtos.actions.CreateActionDTO;
 import com.github.oop_assignment_3.dtos.actions.DeleteActionDTO;
 import com.github.oop_assignment_3.dtos.actions.MoveActionDTO;
 import com.github.oop_assignment_3.dtos.actions.TransformActionDTO;
-import com.github.oop_assignment_3.models.Action;
+import com.github.oop_assignment_3.models.Drawing;
+import com.github.oop_assignment_3.models.LoadRequest;
+import com.github.oop_assignment_3.models.Loader;
+import com.github.oop_assignment_3.models.SaveRequest;
+import com.github.oop_assignment_3.models.Saver;
 import com.github.oop_assignment_3.models.Shape;
 import com.github.oop_assignment_3.models.Transform;
 import com.github.oop_assignment_3.models.actions.CreateAction;
@@ -26,42 +29,33 @@ import com.github.oop_assignment_3.models.shapes.Triangle;
 
 @Service
 public class PaintService {
-	ShapeService shapeService;
+	ShapeManager shapeManager;
+	SaverFactory saverFactory;
+	LoaderFactory loaderFactory;
 
-	Map<Integer, Shape> stage = new HashMap<>();
-	List<Action> history = new ArrayList<>();
-	int historyIndex = 0;
+	Drawing drawing = new Drawing();
 
-	public PaintService(ShapeService shapeService) {
-		this.shapeService = shapeService;
+	public PaintService(ShapeManager shapeManager, SaverFactory saverFactory,
+			LoaderFactory loaderFactory) {
+		this.shapeManager = shapeManager;
 
-		shapeService.registerShape(new Circle());
-		shapeService.registerShape(new Ellipse());
-		shapeService.registerShape(new Line());
-		shapeService.registerShape(new Rect());
-		shapeService.registerShape(new Square());
-		shapeService.registerShape(new Triangle());
+		this.shapeManager.registerShape(new Circle());
+		this.shapeManager.registerShape(new Ellipse());
+		this.shapeManager.registerShape(new Line());
+		this.shapeManager.registerShape(new Rect());
+		this.shapeManager.registerShape(new Square());
+		this.shapeManager.registerShape(new Triangle());
+
+		this.saverFactory = saverFactory;
+		this.loaderFactory = loaderFactory;
 	}
 
 	public List<Shape> getStage() {
-		return new ArrayList<>(stage.values());
-	}
-
-	private List<Shape> apply(Action action) {
-		while (history.size() > historyIndex) {
-			history.remove(history.size() - 1);
-		}
-
-		action.apply(stage);
-
-		history.add(action);
-		historyIndex++;
-
-		return getStage();
+		return drawing.getShapes();
 	}
 
 	public List<Shape> delete(DeleteActionDTO actionDTO) {
-		Shape shape = stage.get(actionDTO.getId());
+		Shape shape = drawing.getShape(actionDTO.getId());
 
 		if (shape == null) {
 			throw new IllegalArgumentException(
@@ -70,24 +64,29 @@ public class PaintService {
 
 		DeleteAction action = new DeleteAction(shape);
 
-		return apply(action);
+		drawing.apply(action);
+
+		return drawing.getShapes();
 	}
 
 	public List<Shape> create(CreateActionDTO actionDTO) {
-		Shape shape = shapeService.createShape(actionDTO.getShape().getClassName());
-		shape.setTransform(actionDTO.getShape().getTransform());
-		shape.setDraggable(actionDTO.getShape().isDraggable());
-		shape.setStrokeWidth(actionDTO.getShape().getStrokeWidth());
-		shape.setStroke(actionDTO.getShape().getStroke());
-		shape.setFill(actionDTO.getShape().getFill());
+		Shape shape = shapeManager.createShape(actionDTO.getClassName());
+		shape.setTransform(actionDTO.getTransform());
+		shape.setDraggable(actionDTO.isDraggable());
+		shape.setStrokeWidth(actionDTO.getStrokeWidth());
+		shape.setStroke(actionDTO.getStroke());
+		shape.setFill(actionDTO.getFill());
 
 		CreateAction action = new CreateAction(shape);
 
-		return apply(action);
+
+		drawing.apply(action);
+
+		return drawing.getShapes();
 	}
 
 	public List<Shape> move(MoveActionDTO actionDTO) {
-		Shape shape = stage.get(actionDTO.getId());
+		Shape shape = drawing.getShape(actionDTO.getId());
 
 		double oldX = shape.getTransform().getX();
 		double oldY = shape.getTransform().getY();
@@ -95,36 +94,44 @@ public class PaintService {
 		MoveAction action = new MoveAction(actionDTO.getId(), oldX, oldY,
 				actionDTO.getNewX(), actionDTO.getNewY());
 
-		return apply(action);
+
+		drawing.apply(action);
+
+		return drawing.getShapes();
 	}
 
 	public List<Shape> transform(TransformActionDTO actionDTO) {
-		Shape shape = stage.get(actionDTO.getId());
+		Shape shape = drawing.getShape(actionDTO.getId());
 		Transform oldTransform = shape.getTransform();
 
 		TransformAction action = new TransformAction(actionDTO.getId(),
 				oldTransform, actionDTO.getNewTransform());
 
-		return apply(action);
-	}
+		drawing.apply(action);
 
-	public List<Shape> redo() {
-		if (historyIndex < history.size()) {
-			Action action = history.get(historyIndex);
-			action.apply(stage);
-			historyIndex++;
-		}
-
-		return getStage();
+		return drawing.getShapes();
 	}
 
 	public List<Shape> undo() {
-		if (historyIndex > 0) {
-			historyIndex--;
-			Action action = history.get(historyIndex);
-			action.undo(stage);
-		}
+		drawing.undo();
+		return drawing.getShapes();
+	}
 
-		return getStage();
+	public List<Shape> redo() {
+		drawing.redo();
+		return drawing.getShapes();
+	}
+
+	public void save(SaveRequest request) throws IOException {
+		Saver saver = saverFactory.getSaver(request.getFormat());
+		saver.save(drawing, request.getFilePath());
+
+	}
+
+	public List<Shape> load(LoadRequest request) throws IOException {
+		Loader loader = loaderFactory.getLoader(request.getFormat());
+		this.drawing = loader.load(request.getFilePath());
+
+		return drawing.getShapes();
 	}
 }

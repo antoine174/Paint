@@ -1,7 +1,7 @@
 package com.github.oop_assignment_3.models.actions;
 
-import java.util.Map;
 import com.github.oop_assignment_3.models.Action;
+import com.github.oop_assignment_3.models.Drawing;
 import com.github.oop_assignment_3.models.Shape;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,12 +16,12 @@ public class DeleteAction extends Action {
 	}
 
 	@Override
-	public void apply(Map<Integer, Shape> stage) {
-		stage.remove(shape.getId());
+	public void apply(Drawing drawing) {
+		drawing.removeShape(shape.getId());
 	}
 
 	@Override
-	public void undo(Map<Integer, Shape> stage) {
-		stage.put(shape.getId(), shape);
+	public void unapply(Drawing drawing) {
+		drawing.addShape(shape);
 	}
 }

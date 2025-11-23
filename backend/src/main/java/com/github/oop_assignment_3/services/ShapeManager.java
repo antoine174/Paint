@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.github.oop_assignment_3.models.Shape;
 
 @Service
-public class ShapeService {
+public class ShapeManager {
 	Map<String, Shape> shapes = new HashMap<>();
 
 	public void registerShape(Shape shape) {

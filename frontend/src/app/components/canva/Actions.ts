@@ -78,8 +78,8 @@ export class Transform extends Action {
   oldScaleX: number
   oldScaleY: number
 
-  constructor(name: string, oldX: number, oldY: number, newY: number, newX: number, newRotation: number
-    , oldRotation: number, oldScaleX: number, oldScaleY: number, newScaleX: number, newScaleY: number) {
+  constructor(name: string, oldX: number, oldY: number, newX: number, newY: number, oldRotation: number
+    , newRotation: number, oldScaleX: number, oldScaleY: number, newScaleX: number, newScaleY: number) {
     super("transform");
     this.name = name
     // NEW PARAMS

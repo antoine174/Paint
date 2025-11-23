@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, OnInit, ViewChild, WritableSignal, signal, ChangeDetectorRef} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+  WritableSignal,
+  signal,
+  ChangeDetectorRef,
+  input
+} from '@angular/core';
 import {CoreShapeComponent, StageComponent, NgKonvaEventObject} from 'ng2-konva';
 import {ShapeConfig} from 'konva/lib/Shape';
 import {ContainerConfig} from 'konva/lib/Container';
@@ -6,7 +15,7 @@ import {Header} from '../header/header';
 import {Drawing} from '../../services/drawing/drawing';
 import Konva from 'Konva'
 import RegularPolygonConfig = Konva.RegularPolygonConfig;
-import {Action, AddShape, DeleteShape, Move} from './Actions';
+import {Action, AddShape, DeleteShape, Move, Transform} from './Actions';
 
 @Component({
   selector: 'app-canvas',
@@ -21,23 +30,37 @@ import {Action, AddShape, DeleteShape, Move} from './Actions';
 export class Canvas implements OnInit, AfterViewInit{
   @ViewChild("transformer", {static: true}) tr!: Transformer;
   @ViewChild("stageComponent", {static: true}) stage!: Transformer;
-  constructor(public drawing: Drawing, private cdr: ChangeDetectorRef) {
+  previousShapes: {type: string, config: ShapeConfig }[] = []
+  prevShapes = input<typeof this.previousShapes>([])
+  constructor(public drawing: Drawing) {
+    console.log(this.prevShapes())
   }
   actionsIndex: number = -1
+  canUndo() {
+    return this.actionsIndex >= 0;
+  }
+  canRedo() {
+    return this.actionsIndex < this.actions.length - 1
+  }
   handleRedo() {
+    if(this.canRedo()) {
     const action = this.actions[++this.actionsIndex];
     console.log(action)
     if(!(action instanceof AddShape)) action.apply(this.shapes)
     else {
       this.createShape(action.className, action.fill)
     }
+    } else console.log("can't redo")
   }
   handleUndo() {
+    if(this.canUndo()) {
+
     const action = this.actions[this.actionsIndex];
     this.actionsIndex--;
     console.log(action)
     action.undo(this.shapes)
     console.log("undid")
+    } else console.log("can't undo")
   }
   handleDelete() {
     const shapesInTransformer = this.transformerNode.nodes();
@@ -60,18 +83,40 @@ export class Canvas implements OnInit, AfterViewInit{
   transformerNode!: Konva.Transformer
   actions: Action[] = [new Move('200', 100, 100, 200, 200)]
    ngAfterViewInit(): void {
+     this.shapes.set(this.prevShapes())
      this.stageNode = (this.stage as any).getNode();
      this.transformerNode = (this.tr as any).getNode();
-    // Rehydrate state from actions: apply each action against the shapes signal.
-    for (let action of this.actions) {
+     this.transformerNode.on("transformend", () => {
+       console.log('transformend')
+       const shape = this.transformerNode.nodes()[0]
+       const newAttrs = shape.attrs
+       const oldAttr = this.shapes().find((s) => s.config.name == newAttrs.name)?.config
+       // the action
+       if(newAttrs && oldAttr) {
+         const transform = new Transform(
+           newAttrs.name,
+           oldAttr.x || 0,
+           oldAttr.y || 0,
+           newAttrs.x,
+           newAttrs.y,
+           oldAttr.rotation || 0,
+           newAttrs.rotation,
+           oldAttr.scaleX || 1,
+           oldAttr.scaleY || 1,
+           newAttrs.scaleX,
+           newAttrs.scaleY
+         )
+         transform.apply(this.shapes);
+         this.actions.push(transform);
+         this.actionsIndex++;
+       }
+     })
+     for (let action of this.actions) {
       action.apply(this.shapes)
     }
 
    }
-  // Shapes is now a WritableSignal so Actions operate on signals directly.
   shapes: WritableSignal<{type: string, config: ShapeConfig}[]> = signal([]);
-  // Simple wrapper used by the template and some debug code. It returns the current shapes array.
-  shapeSignal = () => this.shapes();
   createShape(type: string, fill?: string) {
     switch (type) {
       case "rect" :
@@ -88,8 +133,7 @@ export class Canvas implements OnInit, AfterViewInit{
         this.createEllipse(fill);
         break;
       case 'shapes':
-        //console.log(this.stageNode.children[0].children)
-        console.log(this.shapeSignal())
+        console.log(this.shapes())
         console.log(this.stageNode.toJSON())
         break
       case "line":
@@ -135,10 +179,6 @@ export class Canvas implements OnInit, AfterViewInit{
     e.event.evt.stopPropagation()
     this.transformerNode.stopDrag()
     const shape = e.event.target;
-    // const config = this.shapes.find((s) => s.config.name as string == shape.attrs.name)
-    // console.log(config)
-    // this.shapes = this.shapes.filter((s) => s != config)
-    // this.shapes.push(config as any)
     this.transformerNode.nodes([shape])
     this.transformerNode.getLayer()?.batchDraw();
     console.log(shape)
@@ -147,6 +187,9 @@ export class Canvas implements OnInit, AfterViewInit{
   handleStageClick(e: any) {
     if(!e || !e.target) return;
     if(e.target == e.target.getStage()) {
+      //save the previously selected shape
+
+      // empty the transformer
       this.transformerNode.nodes([])
       this.transformerNode.getLayer()?.batchDraw();
     }

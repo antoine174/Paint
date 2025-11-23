@@ -1,0 +1,43 @@
+<app-header (create)="handleCreateShape($event)" (action)="handleAction($event)"></app-header>
+<ko-stage [config]="stageConfig" (click)="handleStageClick($event.event)"
+          class="border-slate-600 border-2"
+          #stageComponent
+>
+  <ko-layer>
+    @for (shape of shapes(); track $index) {
+      @if (shape.type == "rect") {
+        <ko-rect [config]="shape.config" (click)="handleShapeClick($event)"
+        (dragstart)="handleDragStart($event)" (dragend)="handleDragEnd($event)"
+        ></ko-rect>
+      }
+      @if (shape.type == "circle") {
+        <ko-circle [config]="shape.config" (click)="handleShapeClick($event)"
+                   (dragstart)="handleDragStart($event)" (dragend)="handleDragEnd($event)"
+        ></ko-circle>
+      }
+      @if (shape.type == "ellipse") {
+        <ko-ellipse [config]="shape.config" (click)="handleShapeClick($event)"
+                    (dragstart)="handleDragStart($event)" (dragend)="handleDragEnd($event)"
+        ></ko-ellipse>
+      }
+      @if (shape.type == "square") {
+        <ko-rect [config]="shape.config" (click)="handleShapeClick($event)"
+                 (dragstart)="handleDragStart($event)" (dragend)="handleDragEnd($event)"
+        ></ko-rect>
+      }
+      @if (shape.type == "line") {
+        <ko-line [config]="shape.config" (click)="handleShapeClick($event)"
+                 (dragstart)="handleDragStart($event)" (dragend)="handleDragEnd($event)"
+        ></ko-line>
+      }
+      @if (shape.type == "triangle") {
+        <ko-regular-polygon [config]="shape.config" (click)="handleShapeClick($event)"
+                            (dragstart)="handleDragStart($event)" (dragend)="handleDragEnd($event)"
+        ></ko-regular-polygon>
+      }
+    }
+    <ko-transformer
+    #transformer
+    ></ko-transformer>
+  </ko-layer>
+</ko-stage>

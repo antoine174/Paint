@@ -128,7 +128,7 @@ export class Canvas implements AfterViewInit{
         break;
       }
       case 'exit': {
-        console.log("save")
+        console.log("exit")
         this.handleExit()
         break;
       }

@@ -26,45 +26,40 @@ export class App implements AfterViewInit{
     })
     this.running.set(true)
   }
-  handleLoad(format: string, data: string) {
-    this.http.loadDrawing(format, data).subscribe({
-      next: (d) => {
-        console.log("d")
-      },
-      error: (e) => console.log(e)
-    })
-    this.running.set(true)
+  handleLoad = (e: any) => {
+  const selectedFile = e?.target?.files[0]
+  const fileName = (selectedFile.name as string);
+  const format = fileName.includes("json")? "json":
+    fileName.includes("xml")? "xml": "";
+  const fileReader = new FileReader()
+  fileReader.onload = (e) => {
+    if(["json", "xml"].includes(format)) this.http.loadDrawing(format, e?.target?.result as string)
+      .subscribe({
+        next: (d) => {
+          console.log(d)
+          this.stage.set(d as any)
+          this.running.set(true)
+        },
+        error: (e) => {
+          console.log(e)
+        }
+      })
+    else {
+    }
   }
+  fileReader.readAsText(selectedFile)
+}
   ngAfterViewInit() {
 
     const file = document.getElementById("fileInput")
 
 
-    //console.log(file)
-    file?.addEventListener('change', (e: any) => {
-      const selectedFile = e?.target?.files[0]
-      const fileName = (selectedFile.name as string);
-      const format = fileName.includes("json")? "json":
-        fileName.includes("xml")? "xml": "";
-      const fileReader = new FileReader()
-      fileReader.onload = (e) => {
-        if(["json", "xml"].includes(format)) this.http.loadDrawing(format, e?.target?.result as string)
-          .subscribe({
-            next: (d) => {
-              this.stage.set(d as any)
-              this.running.set(true)
-            }
-          })
-        else {
-
-        }
-      }
-
-      fileReader.readAsText(selectedFile)
-    })
+    // console.log(file)
+    // file?.addEventListener('change', )
 
 
   }
+
 
 }
 

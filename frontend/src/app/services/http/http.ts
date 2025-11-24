@@ -44,7 +44,7 @@ export class Http {
       newx,
       newy,
       newscaleX,
-      newscaleY
+      newrotation
     })
   }
   deleteShape(name: string) {

@@ -1,5 +1,5 @@
 <app-header [format]="format" (create)="handleCreateShape($event)" (action)="handleAction($event)"></app-header>
-<ko-stage [config]="stageConfig" (click)="handleStageClick($event.event)"
+<ko-stage [config]="stageConfig()" (click)="handleStageClick($event.event)"
           class="border-slate-600 border-2"
           #stageComponent
 >

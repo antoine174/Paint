@@ -1,14 +1,13 @@
 import {AfterViewInit, Component, inject, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from './components/header/header';
 import {Canvas} from './components/canva/canvas.component';
 import {ShapeConfig} from 'konva/lib/Shape';
-import {HttpClient} from '@angular/common/http';
 import {Http} from './services/http/http';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Canvas],
+  imports: [Canvas, NgClass],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true
@@ -57,7 +56,7 @@ export class App implements AfterViewInit{
             }
           })
         else {
-          
+
         }
       }
 

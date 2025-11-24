@@ -26,13 +26,38 @@ import {Http} from '../../services/http/http';
   templateUrl: './canvas.component.html',
   styleUrl: './canvas.component.css',
 })
-export class Canvas implements OnInit, AfterViewInit{
+export class Canvas implements AfterViewInit{
   @ViewChild("transformer", {static: true}) tr!: Transformer;
   @ViewChild("stageComponent", {static: true}) stage!: Transformer;
-
+  stageNode!: Konva.Stage
+  transformerNode!: Konva.Transformer
+  http = inject(Http);
+  stageConfig= signal<ContainerConfig>({
+    height: 1000,
+    width: 1920,
+  })
+  ngAfterViewInit(): void {
+    this.stageNode = (this.stage as any).getNode();
+    this.transformerNode = (this.tr as any).getNode();
+    this.transformerNode.on("transformend", () => {
+      console.log('transformend')
+      const shape = this.transformerNode.nodes()[0]
+      const newAttrs = shape.attrs
+      if(newAttrs) {
+        this.http.transformShape(newAttrs.name, newAttrs.x, newAttrs.y, newAttrs.rotation, newAttrs.scaleX, newAttrs.scaleY)
+          .subscribe({
+            next: (d) => {
+              this.shapesSignal().set(d as any[])
+            }
+          })
+      }
+    })
+  }
   constructor(public drawing: Drawing) {
   }
-
+  running = input.required<WritableSignal<boolean>>()
+  shapesSignal= input.required<WritableSignal<any[]>>();
+  format = signal<"json" | "xml">("json")
   handleRedo() {
     this.http.redo()
       .subscribe({
@@ -62,7 +87,6 @@ export class Canvas implements OnInit, AfterViewInit{
       })
     this.transformerNode.nodes([])
   }
-  format = signal<"json" | "xml">("json")
   handleSave() {
     this.http.save(this.format())
       .subscribe({
@@ -72,35 +96,6 @@ export class Canvas implements OnInit, AfterViewInit{
         }
       })
   }
-  stageConfig: ContainerConfig = {
-    height: 1000,
-    width: 1200,
-  }
-  stageNode!: Konva.Stage
-  transformerNode!: Konva.Transformer
-  actions: Action[] = []
-  http = inject(Http);
-   ngAfterViewInit(): void {
-     this.stageNode = (this.stage as any).getNode();
-     this.transformerNode = (this.tr as any).getNode();
-     this.transformerNode.on("transformend", () => {
-       console.log('transformend')
-       const shape = this.transformerNode.nodes()[0]
-       const newAttrs = shape.attrs
-       if(newAttrs) {
-         this.http.transformShape(newAttrs.name, newAttrs.x, newAttrs.y, newAttrs.rotation, newAttrs.scaleX, newAttrs.scaleY)
-           .subscribe({
-             next: (d) => {
-               this.shapesSignal().set(d as any[])
-             }
-           })
-       }
-     })
-
-
-   }
-
-   shapesSignal= input.required<WritableSignal<any[]>>();
   handleCreateShape(type: string) {
     if(type != 'shapes') {
       this.http.createShape(type, this.drawing.SelectedColor).subscribe({
@@ -111,6 +106,7 @@ export class Canvas implements OnInit, AfterViewInit{
     } else {
       console.log(this.shapesSignal()())
     }
+    this.transformerNode.nodes([])
   }
   handleAction(action: string) {
     switch (action) {
@@ -131,10 +127,13 @@ export class Canvas implements OnInit, AfterViewInit{
         this.handleSave()
         break;
       }
+      case 'exit': {
+        console.log("save")
+        this.handleExit()
+        break;
+      }
     }
   }
-  ngOnInit(): void {
-   }
   handleShapeClick(e: NgKonvaEventObject<MouseEvent>) {
     e.event.evt.stopPropagation()
     this.transformerNode.stopDrag()
@@ -142,7 +141,10 @@ export class Canvas implements OnInit, AfterViewInit{
     this.transformerNode.nodes([shape])
     this.transformerNode.getLayer()?.batchDraw();
   }
-
+  handleExit() {
+    this.running().set(false);
+    this.shapesSignal().set([])
+  }
   handleStageClick(e: any) {
     if(!e || !e.target) return;
     if(e.target == e.target.getStage()) {

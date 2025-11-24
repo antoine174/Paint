@@ -1,5 +1,6 @@
-<div class="w-full bg-gray-100 p-3 shadow-md flex items-center justify-between select-none">
+<div class="w-full bg-gray-100 p-3 shadow-md flex items-center justify-between select-none" id="header">
   <div class="flex gap-3">
+    <button class="px-4 py-2 bg-red-900 hover:bg-gray-300 rounded text-white" (click)="handleActionEmmit('exit')">Exit</button>
     <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="handleActionEmmit('undo')">Undo</button>
     <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="handleActionEmmit('redo')">Redo</button>
     <button class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded" (click)="handleActionEmmit('delete')">Delete</button>

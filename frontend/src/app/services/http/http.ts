@@ -44,6 +44,7 @@ export class Http {
       newx,
       newy,
       newscaleX,
+      newscaleY,
       newrotation
     })
   }

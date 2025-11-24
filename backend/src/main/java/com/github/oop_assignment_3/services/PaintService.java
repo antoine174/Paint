@@ -71,6 +71,7 @@ public class PaintService {
 
 	public List<Shape> create(CreateActionDTO actionDTO) {
 		Shape shape = shapeManager.createShape(actionDTO.getClassName());
+		shape.setId(actionDTO.getId());
 		shape.setTransform(actionDTO.getTransform());
 		shape.setDraggable(actionDTO.isDraggable());
 		shape.setStrokeWidth(actionDTO.getStrokeWidth());

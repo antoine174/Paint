@@ -76,6 +76,7 @@ public class PaintService {
 		shape.setStrokeWidth(actionDTO.getStrokeWidth());
 		shape.setStroke(actionDTO.getStroke());
 		shape.setFill(actionDTO.getFill());
+		shape.setFill(actionDTO.getFill());
 
 		CreateAction action = new CreateAction(shape);
 

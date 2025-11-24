@@ -11,7 +11,8 @@ public class Line extends Shape {
 
 	public Line() {
 		super("line");
-
+		this.setStroke(getFill());
+		this.setStrokeWidth(4);
 		this.points = new int[] {50, 50, 250, 50};
 	}
 

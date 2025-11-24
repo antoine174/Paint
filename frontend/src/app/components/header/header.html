@@ -19,17 +19,11 @@
     <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="createEmmit('line')">Line</button>
     <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="createEmmit('ellipse')">Ellipse</button>
     <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="createEmmit('triangle')">Triangle</button>
-    <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="createEmmit('shapes')">shapes</button>
+<!--    <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="createEmmit('shapes')">shapes</button>-->
   </div>
 
-  <div class="grid grid-cols-5 gap-2 mr-6">
-    @for (color of colors; track color) {
-      <button
-        class="w-8 h-8 rounded"
-        (click)="setColor(color.key)"
-        [style.background-color]="color.value"
-        [class.ring-3]="drawing.SelectedColor === color.key"
-      ></button>
-    }
+  <div class="flex justify-center items-center mr-20">
+    <p class="mr-5">Color:</p>
+    <input type="color" (change)="handleColorChange($event)" class="w-20 h-10">
   </div>
 </div>

@@ -45,4 +45,7 @@ export class Header implements AfterViewInit{
     })
   }
 
+  handleColorChange(e: any) {
+    this.drawing.SelectedColor = e.target.value
+  }
 }

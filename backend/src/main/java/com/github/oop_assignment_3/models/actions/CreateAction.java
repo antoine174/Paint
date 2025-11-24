@@ -22,6 +22,6 @@ public class CreateAction extends Action {
 
 	@Override
 	public void unapply(Drawing drawing) {
-		drawing.removeShape(shape.getId());
+		drawing.removeShape(shape.getName());
 	}
 }

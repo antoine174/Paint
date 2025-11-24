@@ -17,7 +17,7 @@ public class DeleteAction extends Action {
 
 	@Override
 	public void apply(Drawing drawing) {
-		drawing.removeShape(shape.getId());
+		drawing.removeShape(shape.getName());
 	}
 
 	@Override

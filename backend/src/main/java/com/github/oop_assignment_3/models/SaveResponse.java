@@ -1,9 +1,10 @@
 package com.github.oop_assignment_3.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class LoadRequest {
-	private String format;
+@AllArgsConstructor
+public class SaveResponse {
 	private String data;
 }

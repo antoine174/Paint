@@ -1,6 +1,5 @@
 package com.github.oop_assignment_3.models.savers;
 
-import java.io.File;
 import java.io.IOException;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -16,7 +15,7 @@ public class JsonSaver implements Saver {
 	}
 
 	@Override
-	public void save(Drawing drawing, String path) throws IOException {
-		mapper.writeValue(new File(path), drawing);
+	public String save(Drawing drawing) throws IOException {
+		return mapper.writeValueAsString(drawing);
 	}
 }

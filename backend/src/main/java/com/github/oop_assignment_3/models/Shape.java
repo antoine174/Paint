@@ -28,7 +28,7 @@ public abstract class Shape implements Cloneable {
 	@Setter(AccessLevel.NONE)
 	private String className;
 
-	private int id;
+	private String name;
 
 	@JsonUnwrapped
 	private Transform transform = new Transform();

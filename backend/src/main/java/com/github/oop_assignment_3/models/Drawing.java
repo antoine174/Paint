@@ -9,7 +9,7 @@ import lombok.ToString;
 
 @ToString
 public class Drawing {
-	private Map<Integer, Shape> shapes = new HashMap<>();
+	private Map<String, Shape> shapes = new HashMap<>();
 	@Getter
 	private List<Action> history = new ArrayList<>();
 	@Getter
@@ -21,19 +21,19 @@ public class Drawing {
 
 	@SuppressWarnings("unused")
 	private void setShapes(List<Shape> shapes) {
-		shapes.forEach(shape -> this.shapes.put(shape.getId(), shape));
+		shapes.forEach(shape -> this.shapes.put(shape.getName(), shape));
 	}
 
-	public Shape getShape(int id) {
-		return shapes.get(id);
+	public Shape getShape(String name) {
+		return shapes.get(name);
 	}
 
 	public void addShape(Shape shape) {
-		shapes.put(shape.getId(), shape);
+		shapes.put(shape.getName(), shape);
 	}
 
-	public void removeShape(int id) {
-		shapes.remove(id);
+	public void removeShape(String name) {
+		shapes.remove(name);
 	}
 
 	public void apply(Action action) {

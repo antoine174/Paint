@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class DeleteActionDTO {
-	private int id;
+	private String name;
 }

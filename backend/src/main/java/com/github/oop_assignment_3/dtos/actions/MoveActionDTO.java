@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MoveActionDTO {
-	private int id;
+	private String name;
 	private double newX;
 	private double newY;
 }

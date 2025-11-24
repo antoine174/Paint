@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class TransformActionDTO {
-	private final int id;
+	private final String name;
 	@JsonUnwrapped(prefix = "new")
 	private final Transform newTransform;
 }

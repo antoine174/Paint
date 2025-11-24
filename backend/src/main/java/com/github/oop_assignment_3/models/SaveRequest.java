@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class SaveRequest {
 	private String format;
-	private String filePath;
 }

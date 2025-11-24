@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class CreateActionDTO {
 	private String className;
-	private int id;
 	@JsonUnwrapped
 	private Transform transform;
 	private boolean draggable;

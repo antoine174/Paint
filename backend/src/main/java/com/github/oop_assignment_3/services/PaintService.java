@@ -82,8 +82,13 @@ public class PaintService {
 		}
 
 		Shape copiedShape = shape.clone();
-		copiedShape.setName(Long.toString(System.currentTimeMillis()));
-
+		copiedShape.setName(Long.toString((long) (System.currentTimeMillis() - 1e5)));
+		Transform t = copiedShape.getTransform().clone();
+		t.setX(shape.getTransform().getX() + 50);
+		t.setY(shape.getTransform().getY() + 50);
+		copiedShape.setTransform(t);
+//		System.out.println(actionDTO.getName());
+//		System.out.println(copiedShape.getName());
 		CopyAction action = new CopyAction(copiedShape);
 
 		drawing.apply(action);

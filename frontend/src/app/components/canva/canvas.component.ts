@@ -87,6 +87,18 @@ export class Canvas implements AfterViewInit{
       })
     this.transformerNode.nodes([])
   }
+  handleCopy() {
+    const shapesInTransformer = this.transformerNode.nodes();
+    if(shapesInTransformer.length == 0) return;
+    const shapeConfig = shapesInTransformer[0];
+    this.http.copyShape(shapeConfig.attrs.name)
+      .subscribe({
+        next: (d) => {
+          this.shapesSignal().set(d as any[])
+        }
+      })
+    this.transformerNode.nodes([])
+  }
   handleSave() {
     this.http.save(this.format())
       .subscribe({
@@ -130,6 +142,10 @@ export class Canvas implements AfterViewInit{
       case 'exit': {
         console.log("exit")
         this.handleExit()
+        break;
+      }
+      case 'copy': {
+        this.handleCopy()
         break;
       }
     }

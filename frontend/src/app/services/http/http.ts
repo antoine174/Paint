@@ -53,6 +53,11 @@ export class Http {
       name,
     })
   }
+  copyShape(name: string) {
+    return this.http.post(`${this.baseURL}/paint/copy`, {
+      name,
+    })
+  }
   undo() {
     return this.http.post(`${this.baseURL}/paint/undo`, {})
   }

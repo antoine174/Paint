@@ -1,5 +1,6 @@
 package com.github.oop_assignment_3.controller;
 
+import com.github.oop_assignment_3.dtos.actions.CopyActionDTO;
 import com.github.oop_assignment_3.dtos.actions.CreateActionDTO;
 import com.github.oop_assignment_3.dtos.actions.DeleteActionDTO;
 import com.github.oop_assignment_3.dtos.actions.MoveActionDTO;
@@ -37,6 +38,11 @@ public class PaintController {
 	@PostMapping("/delete")
 	public List<Shape> delete(@RequestBody DeleteActionDTO dto) {
 		return paintService.delete(dto);
+	}
+
+	@PostMapping("/copy")
+	public List<Shape> copy(@RequestBody CopyActionDTO dto) {
+		return paintService.copy(dto);
 	}
 
 	@PostMapping("/move")

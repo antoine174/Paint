@@ -3,6 +3,7 @@ package com.github.oop_assignment_3.services;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.github.oop_assignment_3.dtos.actions.CopyActionDTO;
 import com.github.oop_assignment_3.dtos.actions.CreateActionDTO;
 import com.github.oop_assignment_3.dtos.actions.DeleteActionDTO;
 import com.github.oop_assignment_3.dtos.actions.MoveActionDTO;
@@ -15,36 +16,23 @@ import com.github.oop_assignment_3.models.SaveResponse;
 import com.github.oop_assignment_3.models.Saver;
 import com.github.oop_assignment_3.models.Shape;
 import com.github.oop_assignment_3.models.Transform;
+import com.github.oop_assignment_3.models.actions.CopyAction;
 import com.github.oop_assignment_3.models.actions.CreateAction;
 import com.github.oop_assignment_3.models.actions.DeleteAction;
 import com.github.oop_assignment_3.models.actions.MoveAction;
 import com.github.oop_assignment_3.models.actions.TransformAction;
-import com.github.oop_assignment_3.models.shapes.Circle;
-import com.github.oop_assignment_3.models.shapes.Ellipse;
-import com.github.oop_assignment_3.models.shapes.Line;
-import com.github.oop_assignment_3.models.shapes.Rect;
-import com.github.oop_assignment_3.models.shapes.Square;
-import com.github.oop_assignment_3.models.shapes.Triangle;
 
 @Service
 public class PaintService {
-	ShapeManager shapeManager;
+	ShapeFactory shapeFactory;
 	SaverFactory saverFactory;
 	LoaderFactory loaderFactory;
 
 	Drawing drawing = new Drawing();
 
-	public PaintService(ShapeManager shapeManager, SaverFactory saverFactory,
+	public PaintService(ShapeFactory shapeFactory, SaverFactory saverFactory,
 			LoaderFactory loaderFactory) {
-		this.shapeManager = shapeManager;
-
-		this.shapeManager.registerShape(new Circle());
-		this.shapeManager.registerShape(new Ellipse());
-		this.shapeManager.registerShape(new Line());
-		this.shapeManager.registerShape(new Rect());
-		this.shapeManager.registerShape(new Square());
-		this.shapeManager.registerShape(new Triangle());
-
+		this.shapeFactory = shapeFactory;
 		this.saverFactory = saverFactory;
 		this.loaderFactory = loaderFactory;
 	}
@@ -69,7 +57,7 @@ public class PaintService {
 	}
 
 	public List<Shape> create(CreateActionDTO actionDTO) {
-		Shape shape = shapeManager.createShape(actionDTO.getClassName());
+		Shape shape = shapeFactory.getShape(actionDTO.getClassName());
 		shape.setName(Long.toString(System.currentTimeMillis()));
 		shape.setTransform(actionDTO.getTransform());
 		shape.setDraggable(actionDTO.isDraggable());
@@ -78,6 +66,24 @@ public class PaintService {
 		shape.setFill(actionDTO.getFill());
 
 		CreateAction action = new CreateAction(shape);
+
+		drawing.apply(action);
+
+		return drawing.getShapes();
+	}
+
+	public List<Shape> copy(CopyActionDTO actionDTO) {
+		Shape shape = drawing.getShape(actionDTO.getName());
+
+		if (shape == null) {
+			throw new IllegalArgumentException(
+					"Shape with id " + actionDTO.getName() + " does not exist.");
+		}
+
+		Shape copiedShape = shape.clone();
+		copiedShape.setName(Long.toString(System.currentTimeMillis()));
+
+		CopyAction action = new CopyAction(copiedShape);
 
 		drawing.apply(action);
 

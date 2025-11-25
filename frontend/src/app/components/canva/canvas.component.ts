@@ -109,8 +109,9 @@ export class Canvas implements AfterViewInit{
       })
   }
   handleCreateShape(type: string) {
+    const {SelectedColor, SelectedStrokeWidth, SelectedStroke} = this.drawing
     if(type != 'shapes') {
-      this.http.createShape(type, this.drawing.SelectedColor).subscribe({
+      this.http.createShape(type, SelectedColor, SelectedStroke, SelectedStrokeWidth).subscribe({
         next: (d) => {
           this.shapesSignal().set(d as any[])
         }

@@ -20,14 +20,14 @@ export class Http {
       data
     })
   }
-  createShape(className: string, fill: string) {
+  createShape(className: string, fill: string, stroke: string, strokeWidth: number) {
     return this.http.post(`${this.baseURL}/paint/create`, {
       x: className == "line"? 0: 100,
       y: className == "line"? 0: 100,
       className,
       fill,
-      strokeWidth: className == "line"? 4: 2,
-      stroke: className != "line"? "black": fill,
+      strokeWidth: className == "line"? 4: strokeWidth,
+      stroke: stroke,//className != "line"? "black": fill,
       draggable: true
     })
   }

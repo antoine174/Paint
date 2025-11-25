@@ -23,8 +23,18 @@
 <!--    <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" (click)="createEmmit('shapes')">shapes</button>-->
   </div>
 
-  <div class="flex justify-center items-center mr-20">
-    <p class="mr-5">Color:</p>
-    <input type="color" (change)="handleColorChange($event)" class="w-20 h-10">
+  <div class="flex justify-center items-center gap-4 mr-8">
+    <div class="flex justify-center items-center">
+      <p class="mr-5">Color:</p>
+      <input type="color" [value]="this.drawing.SelectedColor" (change)="handleColorChange($event)" class="w-10 h-10 rounded-6xl">
+    </div>
+    <div class="flex justify-center items-center">
+      <p class="mr-5">Stroke:</p>
+      <input type="color" [value]="this.drawing.SelectedStroke" (change)="handleStrokeChange($event)" class="w-10 h-10">
+    </div>
+    <div class="flex justify-center items-center">
+      <p class="mr-5">Stroke Width:</p>
+      <input type="number" [value]="this.drawing.SelectedStrokeWidth" (change)="handleStrokeWidthChange($event)" class="w-10 h-10">
+    </div>
   </div>
 </div>

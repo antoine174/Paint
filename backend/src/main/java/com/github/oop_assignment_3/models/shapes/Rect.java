@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Rect extends Shape {
-	private double width = 100;
+	private double width = 200;
 	private double height = 100;
 
 	public Rect() {

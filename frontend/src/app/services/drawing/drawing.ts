@@ -5,4 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class Drawing {
   SelectedColor: string = 'black';
+  SelectedStroke: string = 'black';
+  SelectedStrokeWidth: number = 4;
 }

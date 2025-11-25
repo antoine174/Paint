@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Ellipse extends Shape {
-	private double radiusX = 50;
+	private double radiusX = 100;
 	private double radiusY = 50;
 
 	public Ellipse() {

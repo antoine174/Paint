@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.oop_assignment_3.serialization.CamelCaseUnwrappingSerializerModifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -14,4 +15,5 @@ public class ApplicationConfiguration {
 		module.setSerializerModifier(new CamelCaseUnwrappingSerializerModifier());
 		return module;
 	}
+
 }

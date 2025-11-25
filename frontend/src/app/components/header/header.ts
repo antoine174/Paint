@@ -1,4 +1,4 @@
-import {Component, output} from '@angular/core';
+import {AfterViewInit, Component, Input, input, output, WritableSignal} from '@angular/core';
 import { Drawing } from '../../services/drawing/drawing';
 
 // @ts-ignore
@@ -9,7 +9,7 @@ import { Drawing } from '../../services/drawing/drawing';
   styleUrl: './header.css',
   standalone: true
 })
-export class Header {
+export class Header implements AfterViewInit{
   colors = [
     { key: 'red', value: 'var(--color-red-500)' },
     { key: 'blue', value: 'var(--color-blue-500)' },
@@ -30,10 +30,22 @@ export class Header {
   handleActionEmmit(action: string) {
     this.action.emit(action)
   }
+  format = input.required<WritableSignal<"json" | "xml">>()
   constructor(public drawing: Drawing) {}
 
   setColor(color: string) {
     this.drawing.SelectedColor = color;
     console.log(this.drawing.SelectedColor);
+  }
+
+  ngAfterViewInit(): void {
+    const select = document.getElementById("format")
+    select?.addEventListener("change", (e: any) => {
+      this.format().set(e.target.value)
+    })
+  }
+
+  handleColorChange(e: any) {
+    this.drawing.SelectedColor = e.target.value
   }
 }

@@ -1,2 +1,24 @@
-<app-canvas [prevShapes]="prevShapes"></app-canvas>
-<router-outlet></router-outlet>
+
+@if(running()) {
+  <app-canvas [running]="running" [shapesSignal]="stage"></app-canvas>
+}
+@else {
+<div class="w-full h-screen flex items-center"
+  [ngClass]="{'bg-slate-200': !running()}">
+  <div class="w-70 h-70 border-2 border-b-slate-500 text-center text-2xl
+  flex flex-col rounded-3xl justify-center items-center bg-slate-600
+  m-auto
+">
+    <button (click)="handleNew()"
+      class="bg-blue-600 w-fit px-4 py-2 text-white rounded-2xl">New</button>
+    <label for="fileInput"
+           class="bg-red-500 text-white px-3 rounded-2xl
+           mt-2 py-2  w-fit">
+      load
+      <input class="text-[0px]" type="file" name="fileInput" id="fileInput" (change)="handleLoad($event)">
+    </label>
+
+  </div>
+</div>
+}
+

@@ -4,13 +4,6 @@
 
 <div align="center">
 
-<a href="https://github.com/TarekSaeed0/Paint/blob/main/LICENSE">
- <picture>
-    <source media="(prefers-color-scheme: dark)"  srcset="https://img.shields.io/github/license/TarekSaeed0/Paint?style=for-the-badge&labelColor=%23151b23&color=%234493f8">
-    <source media="(prefers-color-scheme: light)" srcset="https://img.shields.io/github/license/TarekSaeed0/Paint?style=for-the-badge&labelColor=%23f6f8fa&color=%230969da">
-    <img alt="GitHub License" src="https://img.shields.io/github/license/TarekSaeed0/Paint?style=for-the-badge&labelColor=%23151b23&color=%234493f8">
- </picture>
-</a>
 <a href="https://github.com/TarekSaeed0/Paint/graphs/contributors">
   <picture>
     <source media="(prefers-color-scheme: dark)"  srcset="https://img.shields.io/github/contributors/TarekSaeed0/Paint?style=for-the-badge&labelColor=%23151b23&color=%234493f8">
